@@ -1,11 +1,11 @@
 import datetime
 import re
 import json
+import uuid
 from enum import Enum
 from typing import Union
 from seriable import Serializable
-from constantes import Const
-import uuid
+from constantes import REGEX
 
 
 class Joueur(Serializable):
@@ -20,14 +20,21 @@ class Joueur(Serializable):
 
     Sexe = Enum('Sexe', 'Male Female Transgender Hermaphrodite')
 
-    def __init__(self, nom, prenom, date_naissance, sexe, classement=0, identifiant=uuid.uuid4():
+    def __init__(
+        self,
+        nom,
+        prenom,
+        date_naissance,
+        sexe,
+        classement=0
+        ):
         """ Contructeur pour instanciation d'un joueur"""
-        self.identifiant = identifiant
         self.nom = nom
         self.prenom = prenom
         self.date_naissance = date_naissance
         self.sexe = sexe
         self.classement = classement
+        self.identifiant = uuid.uuid4()
 
 
     @property
@@ -36,10 +43,12 @@ class Joueur(Serializable):
 
     @nom.setter
     def nom(self, value: str):
-        if re.search(Const.REGEX, value):
+        if re.search(REGEX, value):
             self.__nom = value
         else:
-            raise AttributeError("Attention le nom comprend autre chose que des lettres !")
+            raise AttributeError(
+                "Attention le nom comprend autre chose que des lettres !"
+                )
 
     @property
     def prenom(self) -> str:
@@ -47,10 +56,12 @@ class Joueur(Serializable):
 
     @prenom.setter
     def prenom(self, value: str):
-        if re.search(Const.REGEX, value):
+        if re.search(REGEX, value):
             self.__prenom = value
         else:
-            raise AttributeError("Attention le prénom comprend autre chose que des lettres !")
+            raise AttributeError(
+                "Attention le prénom comprend autre chose que des lettres !"
+                )
 
     @property
     def date_naissance(self) -> datetime.date:
@@ -85,7 +96,9 @@ class Joueur(Serializable):
             try:
                 self.__sexe = value
             except KeyError:
-                raise AttributeError("La valeur doit être de ici type Joueur.Sexe ou str")
+                raise AttributeError(
+                    "La valeur doit être de ici type Joueur.Sexe ou str"
+                )
 
     @property
     def classement(self) -> int:
@@ -93,29 +106,29 @@ class Joueur(Serializable):
 
     @classement.setter
     def classement(self, value: int):
-        if int(value) <= 0:
-            raise AttributeError("Erreur, le classement fourni ne peut être négatif")
+        if int(value) < 0:
+            raise AttributeError(
+        "Erreur, le classement fourni ne peut être négatif"
+        )
         self.__classement = value
 
     @property
-    def identifiant(self):
+    def identifiant(self) -> str:
         return self.__identifiant
 
     @identifiant.setter
-    def identifiant(self, value: Union[uuid,str]):
+    def identifiant(self, value: Union[uuid.UUID, str]):
         if isinstance(value, str):
             try:
-             self.identifiant = uuid4(value)
-            except  ValueError :
-                raise  AttributeError ("Erreur....."
-            
-        if isinstance(value,uuid):
+                self.__identifiant = uuid.uuid4(value)
+            except ValueError:
+                raise AttributeError(
+                    "Erreur sur la génération de l'identifiant")
+        if isinstance(value, uuid.UUID):
             if(value.version == 4):
-                self.__identifiant = value
-            else:
-                raise AttributeError("Erreur...")
-  
-
+                self.__identifiant = str(value)
+        else:
+            raise AttributeError("Erreur...")
 
     def __repr__(self) -> str:
         """ fonction permettant de représenter un joueur"""
@@ -124,20 +137,22 @@ class Joueur(Serializable):
             f"{self.__nom},"
             f"(date de naissance={self.__date_naissance},"
             f"sexe={self.__sexe},"
-            f"classement={self.__classement})>"
+            f"classement={self.__classement},"
+            f"identifiant={self.__identifiant})>"
         )
 
-    def serialize(self) -> dict[str, str]:
+    def serialize(self):
         """ fonction qui permet de serialiser un Joueur, en sortie
         nous obtenons un dictionnaire contenant les informations du  joueur """
-        data_dict = {}
-        data_dict["nom"] = self.nom
-        data_dict["prenom"] = self.prenom
-        data_dict["date_naissance"] = self.date_naissance.strftime("%Y-%m-%d")
-        data_dict["sexe"] = self.sexe.name
-        data_dict["classement"] = self.classement
-        return data_dict
-
+        return {
+                "nom": self.nom,
+                "prenom": self.prenom,
+                "date_naissance": self.date_naissance.strftime("%Y-%m-%d"),
+                "sexe": self.sexe.name,
+                "classement": self.classement,
+                "identifiant": self.identifiant
+            }
+ 
     def lecture_joueurs_json():
         """fonction permettant de lire un fichier json et de
          produire une liste de Joueurs
@@ -155,12 +170,19 @@ class Joueur(Serializable):
             ))
         return liste_joueurs
 
+    def liste_identifiants_joueurs(liste_joueurs):
+        list_id_joueurs = []
+        for elt in liste_joueurs:
+            list_id_joueurs.append(elt.identifiant)
+        return list_id_joueurs
+
 
 def main():
-    #print(Joueur.lecture_joueurs_json())
-    dolores_data = {'nom' : 'Diaz', 'prenom': 'Dolores', 'date_naissance':'1978-08-22', 'sexe': 'Female', 'classement': 100 }
-    dolores = Joueur(**dolores_data)
-    assert dolores.serialize() == dolores_data
+    liste_joueurs = Joueur.lecture_joueurs_json()
+    print(Joueur.liste_identifiants_joueurs(liste_joueurs))
+    #dolores_data = {'nom': 'Diaz', 'prenom': 'Dolores', 'date_naissance': '1978-08-22', 'sexe': 'Female', 'classement': 100}
+    #dolores = Joueur(**dolores_data).serialize()
+    #print(dolores)
 
 
 if __name__ == "__main__":
