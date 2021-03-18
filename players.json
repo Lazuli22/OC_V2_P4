@@ -1,0 +1,11 @@
+[
+    {"player": {"surname": "Diaz", "forename": "Dolores", "date_of_birth" : "1978-08-22", "sexe": "Female", "rank":100}},
+    {"player": {"surname":"Dupont", "forename":"Carole", "date_of_birth": "1980-11-22", "sexe":"Female", "rank" : 200}},
+    {"player": {"surname":"Roche", "forename":"Thomas", "date_of_birth": "1985-05-25", "sexe":"Male", "rank" : 130}},
+    {"player": {"surname":"Pondre", "forename":"Valentine", "date_of_birth": "1986-10-28", "sexe":"Female", "rank" : 240}},
+    {"player": {"surname":"Benu", "forename":"Cedric", "date_of_birth": "1975-11-16", "sexe":"Male", "rank" : 180}},
+    {"player": {"surname":"Aris", "forename":"Patricia", "date_of_birth": "1978-12-30", "sexe":"Female", "rank" : 203}},
+    {"player": {"surname":"Cleo", "forename":"Christope", "date_of_birth": "2000-03-01", "sexe":"Male", "rank" : 400}},
+    {"player": {"surname":"Pene", "forename":"Julie", "date_of_birth": "1990-08-25", "sexe":"Female", "rank" : 300}}    
+ 
+]
