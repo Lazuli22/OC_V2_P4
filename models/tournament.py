@@ -1,6 +1,5 @@
 from models.constants import REGEX
 from typing import Union
-from models.player import Player
 from models.match import Match
 from models.round import Round
 from enum import Enum

@@ -10,25 +10,26 @@ from models.constants import REGEX
 class Player(Serializable):
     """ Class define a player who is characteriszed :
     - uuid
-    - surname
-    - forename
+    - firstname
+    - lastname
     - day of birth
     - sexe
     - rank
+    - identifier
     """
 
     Sexe = Enum('Sexe', 'Male Female Transgender Hermaphrodite')
 
     def __init__(
             self,
-            surname,
-            forename,
+            firstname,
+            lastname,
             date_of_birth,
             sexe,
             rank=0
             ):
-        self.surname = surname
-        self.forename = forename
+        self.firstname = firstname
+        self.lastname = lastname
         self.date_of_birth = date_of_birth
         self.sexe = sexe
         self.rank = rank
@@ -36,29 +37,29 @@ class Player(Serializable):
 
 
     @property
-    def surname(self) -> str:
-        return self.__surname
+    def firstname(self) -> str:
+        return self.__firstname
 
-    @surname.setter
-    def surname(self, value: str):
+    @firstname.setter
+    def firstname(self, value: str):
         if re.search(REGEX, value):
-            self.__surname = value
+            self.__firstname = value
         else:
             raise AttributeError(
-                "Attention the surname includes other things than letters !"
+                "Attention the firstname includes other things than letters !"
                 )
 
     @property
-    def forename(self) -> str:
-        return self.__forename
+    def lastname(self) -> str:
+        return self.__lastname
 
-    @forename.setter
-    def forename(self, value: str):
+    @lastname.setter
+    def lastname(self, value: str):
         if re.search(REGEX, value):
-            self.__forename = value
+            self.__lastname = value
         else:
             raise AttributeError(
-                "Attention  the forename includes other things than letters !"
+                "Attention  the lastname includes other things than letters !"
                 )
 
     @property
@@ -131,8 +132,8 @@ class Player(Serializable):
     def __repr__(self) -> str:
         """ function that represents a player"""
         return (
-            f"<Player {self.__forename},"
-            f"{self.__surname},"
+            f"<Player {self.__firstname},"
+            f"{self.__lastname},"
             f"(date of birth = {self.__date_of_birth},"
             f"sexe = {self.__sexe},"
             f"rank = {self.__rank},"
@@ -145,8 +146,8 @@ class Player(Serializable):
         In output, the function gives a dict of data
         """
         return {
-                "surname": self.surname,
-                "forename": self.forename,
+                "firstname": self.firstname,
+                "lastname": self.lastname,
                 "date_of_birth": self.date_of_birth.strftime("%Y-%m-%d"),
                 "sexe": self.sexe.name,
                 "rank": self.rank,
