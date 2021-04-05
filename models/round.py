@@ -1,8 +1,6 @@
 from datetime import datetime
 import re
 from models.constants import REGEX
-from models.player import Player
-from models.match import Match
 from models.seriable import Serializable
 
 

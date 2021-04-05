@@ -19,22 +19,29 @@ class Player(Serializable):
     """
 
     Sexe = Enum('Sexe', 'Male Female Transgender Hermaphrodite')
-
+    
     def __init__(
             self,
             firstname,
             lastname,
             date_of_birth,
             sexe,
-            rank=0
+            rank,
+            identifier=None
             ):
-        self.firstname = firstname
+        errors = []
+        try:
+            self.firstname = firstname
+        except AttributeError as e:
+            errors.append(f"firstname: {str(e)}")
+
         self.lastname = lastname
         self.date_of_birth = date_of_birth
         self.sexe = sexe
         self.rank = rank
-        self.identifier = uuid.uuid4()
-
+        self.identifier = identifier if identifier else uuid.uuid4()
+        if errors:
+            raise Exception(errors)
 
     @property
     def firstname(self) -> str:
@@ -117,27 +124,29 @@ class Player(Serializable):
 
     @identifier.setter
     def identifier(self, value: Union[uuid.UUID, str]):
+        if not value:
+            value = uuid.uuid4()
         if isinstance(value, str):
             try:
-                self.__identifier = uuid.uuid4(value)
+                self.__identifier = uuid.UUID(value)
             except ValueError:
                 raise AttributeError(
                     "Error on generation of the identifier")
         if isinstance(value, uuid.UUID):
             if(value.version == 4):
                 self.__identifier = str(value)
-        else:
-            raise AttributeError("Erreur on identifier")
+            else:
+                raise AttributeError("Erreur on identifier")
 
     def __repr__(self) -> str:
         """ function that represents a player"""
         return (
-            f"<Player {self.__firstname},"
-            f"{self.__lastname},"
-            f"(date of birth = {self.__date_of_birth},"
-            f"sexe = {self.__sexe},"
-            f"rank = {self.__rank},"
-            f"identifier = {self.__identifier})>"
+            f"<Player {self.__firstname}, "
+            f"{self.__lastname}, "
+            f"(date of birth = {self.__date_of_birth}, "
+            f"sexe = {self.__sexe}, "
+            f"rank = {self.__rank}, "
+            f"identifier = {self.__identifier})> "
         )
 
     def serialize(self):

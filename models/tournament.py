@@ -1,12 +1,11 @@
 from models.constants import REGEX
 from typing import Union
-from models.match import Match
 from models.round import Round
 from enum import Enum
 import uuid
 import re
 import datetime
-from operator import attrgetter
+
 from models.seriable import Serializable
 
 
@@ -135,23 +134,7 @@ class Tournament(Serializable):
         for elt in liste_players:
             list_id_players.append(elt.identifier)
         return list_id_players
-
-    def generate_matchs_firstRound(self, list_players):
-        """ function that generates matchs for the 1er Round """
-        list_triee = sorted(
-                    list_players,
-                    key=attrgetter("rank"),
-                    reverse=True
-                    )
-        self.list_rounds.append(Round("Round 1", [
-            Match("Match1", list_triee[0], 0, list_triee[4], 0),
-            Match("Match2", list_triee[1], 0, list_triee[5], 0),
-            Match("Match3", list_triee[2], 0, list_triee[6], 0),
-            Match("Match4", list_triee[3], 0, list_triee[7], 0)
-            ]))
-        for elt in list_players:
-            self.list_players.append(elt.identifier)
-
+    
     def serialize(self):
         """ Function that seralizes a tournament.
             In output, it gives a dict of data keys/values

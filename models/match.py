@@ -1,5 +1,4 @@
 from models.seriable import Serializable
-from models.player import Player
 
 
 class Match(Serializable):
