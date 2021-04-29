@@ -34,12 +34,26 @@ class Player(Serializable):
             self.firstname = firstname
         except AttributeError as e:
             errors.append(f"firstname: {str(e)}")
-
-        self.lastname = lastname
-        self.date_of_birth = date_of_birth
-        self.sexe = sexe
-        self.rank = rank
-        self.identifier = identifier if identifier else uuid.uuid4()
+        try:
+            self.lastname = lastname
+        except AttributeError as e:
+            errors.append(f"lastname: {str(e)}")
+        try:
+            self.date_of_birth = date_of_birth
+        except AttributeError as e:
+            errors.append(f"date de naissance: {str(e)}")
+        try:
+            self.sexe = sexe
+        except AttributeError as e:
+            errors.append(f"sexe: {str(e)}")
+        try:
+            self.rank = rank
+        except AttributeError as e:
+            errors.append(f"classement: {str(e)}")
+        try:
+            self.identifier = identifier if identifier else uuid.uuid4()
+        except AttributeError as e:
+            errors.append(f"idenfiant: {str(e)}")
         if errors:
             raise Exception(errors)
 
@@ -107,12 +121,12 @@ class Player(Serializable):
                 )
 
     @property
-    def rank(self) -> int:
+    def rank(self) -> float:
         return self.__rank
 
     @rank.setter
-    def rank(self, value: int):
-        if int(value) < 0:
+    def rank(self, value: float):
+        if float(value) < 0:
             raise AttributeError(
                 "Error, the rank can't be negative"
             )
@@ -139,14 +153,15 @@ class Player(Serializable):
                 raise AttributeError("Erreur on identifier")
 
     def __repr__(self) -> str:
-        """ function that represents a player"""
+        """ function that represents a player - todo simplier l'affichage"""
         return (
-            f"<Player {self.__firstname}, "
+            f"{self.__firstname},"
             f"{self.__lastname}, "
-            f"(date of birth = {self.__date_of_birth}, "
-            f"sexe = {self.__sexe}, "
-            f"rank = {self.__rank}, "
-            f"identifier = {self.__identifier})> "
+            f"{self.__date_of_birth}, "
+            f"{self.__sexe.name}, "
+            f"{self.__rank}, "
+            f"{self.__identifier} "
+            "\n"
         )
 
     def serialize(self):
@@ -157,8 +172,8 @@ class Player(Serializable):
         return {
                 "firstname": self.firstname,
                 "lastname": self.lastname,
-                "date_of_birth": self.date_of_birth.strftime("%Y-%m-%d"),
+                "date_of_birth": (self.date_of_birth.strftime("%Y-%m-%d")),
                 "sexe": self.sexe.name,
                 "rank": self.rank,
-                "identifier": self.identifier
+                "identifier": str(self.identifier)
             }

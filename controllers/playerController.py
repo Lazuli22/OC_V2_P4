@@ -1,22 +1,38 @@
 import json
+import uuid
+from operator import attrgetter
 from views.playersForm import PlayersForm
-from utils.playersFactory import PlayersFactory
-from utils.singleton import Singleton
 from controllers.controller import Controller
+from utils.player_manager import player_manager as players
 
 
 class PlayerController(Controller):
 
     def create_one_player(self):
         """ function that creates a new player  """
-        a_fab = PlayersFactory.getInstance()
         one_player = PlayersForm().createForm_one_player()
-        a_fab.addPlayer(one_player)
+        players.create(**one_player)
         return one_player
 
+    def players_sort(self, one_sort):
+        players_list = players.find_all()
+        if one_sort == 'C':
+            sorted_list = sorted(
+                                players_list,
+                                key=attrgetter("rank"),
+                                reverse=True)
+        elif one_sort == 'O':
+            sorted_list = sorted(
+                        players_list,
+                        key=lambda x: (x.firstname, x.lastname)
+                        )
+        else:
+            print("pas d ordre défini")
+        return sorted_list
+        
     def get_one(self, id_player):
-        a_fab = PlayersFactory.getInstance()
-        one_player = a_fab.get_one_player(id_player)
+        id_player = uuid.UUID(id_player)
+        one_player = players.find_by_id(id_player)
         return one_player
 
     def load_create(self, choice, id_element):
@@ -41,3 +57,4 @@ class PlayerController(Controller):
                 elt["player"]["identifier"]
             )
         return id_liste_players
+  

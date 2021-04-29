@@ -1,6 +1,6 @@
 from views.view import View
 from models.player import Player
-from utils.playersFactory import PlayersFactory
+from utils.player_manager import player_manager as players
 
 
 class PlayersView(View):
@@ -18,15 +18,24 @@ class PlayersView(View):
         print(f"identifiant: {one_player.identifier}")
         print("")
 
+    def show_sorted_players(self, list_players):
+        """ function that shows a sorted list of players """
+        print("--------------------------")
+        print("Liste triée des joueurs ")
+        print("--------------------------")
+        for elt in list_players:
+            print(f"{elt.firstname} {elt.lastname} {elt.rank}")
+
+
     def show_all_players(self):
         """ function that shows all players the players registry """
         print("--------------------------")
         print("Liste de tous les joueurs")
         print("--------------------------")
-        unefab = PlayersFactory.getInstance()
-        for i in range(len(unefab.players_registry)):
-            self.show_one_player(unefab.players_registry[i])
-    
+        print("Souhaitez - vous une présentation par classement (C) ou par ordre alphabétique (O) ?")
+        res = input()
+        return res
+
     def add_players_tournament(self, id_tournament):
         """ Function that permits to add players in a tournament """
         print("Ajoutez des joueurs à un tournoi")

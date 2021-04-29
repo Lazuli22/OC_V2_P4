@@ -1,5 +1,6 @@
 from views.view import View
 
+
 class Menu(View):
 
     def show(self, titre, options):
@@ -27,13 +28,15 @@ class Menu(View):
             ["Consulter tous les tournois ",
              "Consulter un tournoi en particulier",
              "Créer un tournoi",
+             "Consulter tous les rounds d'un tournoi",
+             "Consulter tous les matchs d'un tournoi",
              "Suivre la réalisation d'un tournoi",
              "Revenir au menu précédent",
              "Quitter",
              ]
             )
         one_input = input()
-        if one_input == "2":
+        if one_input in ["2", "4", "5"]:
             print("Veuillez fournir l'idenfiant du tournoi à consulter :")
             id_tournament = input()
         elif one_input == "3":
@@ -58,3 +61,6 @@ class Menu(View):
         elif one_input == "3":
             print("Ajout d'un joueur au sein du registre des joueurs")
         return (one_input, id_player)
+
+    
+    

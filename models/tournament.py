@@ -5,6 +5,7 @@ from enum import Enum
 import uuid
 import re
 import datetime
+from itertools import combinations
 
 from models.seriable import Serializable
 
@@ -27,20 +28,52 @@ class Tournament(Serializable):
             self,
             name,
             location,
-            date,
+            nbre_tours,
+            list_rounds,
+            list_players,
             time_rule,
-            description
+            description,
+            matches_dones,
+            identifier, 
+            date=None
             ):
-        self.name = name
-        self.location = location
-        self.date = date
-        self.__nber_rounds = 4
-        self.__list_rounds = []
-        self.list_players = []
-        self.time_rule = time_rule
-        self.description = description
+        errors = []
+        try:
+            self.name = name
+        except AttributeError as e:
+            errors.append(f"name:  {str(e)}")
+        try:
+            self.location = location
+        except AttributeError as e:
+            errors.append(f"location: {str(e)}")
+        try:
+            self.date = date
+        except AttributeError as e:
+            errors.append(f"date: {str(e)}")
+        try:
+            self.__nber_rounds = nbre_tours
+        except AttributeError as e:
+            errors.append(f"nombre de tours: {str(e)}")
+        try:
+            self.list_rounds = list_rounds
+            print(self.list_rounds)
+        except AttributeError as e:
+            errors.append(f"liste de rounds :{str(e)}")
+        try:
+            self.list_players = list_players
+        except AttributeError as e:
+            errors.append(f"liste de joueurs : {str(e)}")
+        try:
+            self.time_rule = time_rule
+        except AttributeError as e:
+            errors.append(f"règle de jeu: {str(e)}")
+        try:
+            self.description = description
+        except AttributeError as e:
+            errors.append(f"description: {str(e)}")
         date = str(self.date)
-        self.identifier = f"{self.name}_{self.location}_{date}"
+        self.identifier = identifier if identifier else f"{self.name}_{self.location}_{date}"
+        self.matches_dones = matches_dones
 
     @property
     def name(self) -> str:
@@ -70,27 +103,38 @@ class Tournament(Serializable):
 
     @date.setter
     def date(self, dateT: Union[str, datetime.date]):
+        if dateT is None:
+            self.date = datetime.date.now()
         try:
             if isinstance(dateT, str):
                 dateT = datetime.date.fromisoformat(dateT)
                 self.__date = dateT
         except ValueError:
-            raise AttributeError("Impossible to determine la date")
+            raise AttributeError("Impossible de determiner la date")
         try:
             if isinstance(dateT, datetime.date):
                 self.__date = dateT
         except ValueError:
-            raise AttributeError("Impossible to determine la date")
+            raise AttributeError("Impossible de determiner la date")
 
     @property
     def list_rounds(self) -> list[Round]:
         return self.__list_rounds
 
     @list_rounds.setter
-    def list_rounds(self, list_rounds: list[Round]):
-        if list_rounds is not None:
-            self.__list_rounds = list_rounds
-
+    def list_rounds(self, list_rounds: list[Union[dict, Round]]):
+        self.__list_rounds = []
+        for elt in list_rounds:
+            if isinstance(elt, dict):
+                #print(elt)
+                one_round = Round(**elt)
+                self.__list_rounds.append(one_round)
+                #print(self.list_rounds)
+            elif isinstance(elt, Round):
+                self.__list_rounds.append(elt)
+            else:
+                raise AttributeError("Erreur sur la création d'un Round")
+       
     @property
     def list_players(self) -> list[uuid.UUID]:
         return self.__list_players
@@ -98,6 +142,8 @@ class Tournament(Serializable):
     @list_players.setter
     def list_players(self, new_players: list[uuid.UUID]):
         if new_players is not None:
+            if len(new_players) != 8:
+                raise AttributeError("Erreur sur les joueurs")
             self.__list_players = new_players
 
     @property
@@ -140,20 +186,36 @@ class Tournament(Serializable):
             In output, it gives a dict of data keys/values
         """
         list_rounds = []
+        list_matches_dones = []
         for elt in self.list_rounds:
             list_rounds.append(elt.serialize())
+        print(self.matches_dones)
+        for elt in self.matches_dones:
+            list_matches_dones.append(str(elt))
         return {
-            "name": self.name,
-            "location": self.location,
-            "date": self.date.strftime("%Y-%m-%d"),
-            "nbre_tours": 4,
-            "rounds": list_rounds,
-            "list_players": self.list_players,
-            "time_rule": self.time_rule.value,
-            "description": self.description,
-            "identifier": self.identifier
-        }
-
-
-
-
+                "name": self.name,
+                "location": self.location,
+                "date": self.date.strftime("%Y-%m-%d"),
+                "nbre_tours": 4,
+                "list_rounds": list_rounds,
+                "list_players": self.list_players,
+                "time_rule": self.time_rule.name,
+                "description": self.description,
+                "matches_dones": list_matches_dones,
+                "identifier": self.identifier
+                }
+    
+    def __repr__(self) -> str:
+        """ function that represents a tournament - todo simplier l'affichage"""
+        return (
+            f"{self.__name},"
+            f"{self.__location}, "
+            f"{self.__date}, "
+            f"{self.__list_rounds}, "
+            f"{self.__list_players}, "
+            f"{self.__time_rule.name}, "
+            f"{self.matches_dones}, "
+            f"{self.__description}, "
+            f"{self.identifier} "
+            "\n"
+        )

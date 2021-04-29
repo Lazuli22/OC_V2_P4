@@ -1,6 +1,7 @@
 import abc
 from utils.singleton import Singleton
 
+
 class View(Singleton, metaclass=abc.ABCMeta):
     """ Abstract class to defines views of Chess Tournament"""
     def __init__(self):
@@ -20,4 +21,8 @@ class View(Singleton, metaclass=abc.ABCMeta):
         return choix, id_element
 
     def quit(self):
-        print("Sortie du programme ! A bientôt ! ")
+        print("Sortie du programme ! A bientôt")
+
+
+
+

@@ -1,4 +1,5 @@
-from utils.singleton import Singleton
+from utils.player_manager import player_manager as players
+from utils.tournament_manager import tournament_manager as tournaments
 from controllers.playerController import PlayerController
 from controllers.tournamentController import TournamentController
 from views.menu import Menu
@@ -6,7 +7,7 @@ from views.playersView import PlayersView
 from views.tournamentsView import TournamentsView
 
 
-class MainController(Singleton):
+class MainController:
     """
     main controller class that permits to start the program
     """
@@ -25,6 +26,8 @@ class MainController(Singleton):
             input_two, id_tournament = menu.show_tournaments_menu()
             self.start_tournaments_menu(input_two, id_tournament)
         elif one_input == '3':
+            players.save_to_json()
+            tournaments.save_to_json()
             menu.quit()
         else:
             print("Veuillez choisir une option valide du menu")
@@ -34,7 +37,8 @@ class MainController(Singleton):
         """ function that shows the players menu"""
         players_menu = PlayersView()
         if input == "1":
-            players_menu.show_all_players()
+            one_sort = players_menu.show_all_players()
+            players_menu.show_sorted_players(PlayerController().players_sort(one_sort))
             self.start()
         elif input == "2":
             one_player = PlayerController().get_one(id_player)
@@ -46,6 +50,8 @@ class MainController(Singleton):
         elif input == "4":
             self.start()
         elif input == "5":
+            players.save_to_json()
+            tournaments.save_to_json()
             players_menu.quit()
         else:
             print("Veuillez choisir une option valide du menu")
@@ -67,40 +73,47 @@ class MainController(Singleton):
             tournaments_menu.show_one_tournament(one_tournament)
             self.start()
         elif input == '4':
-            self.tournament_execution()
+            one_tournament = tournaments_controller.get_one(id_tournament)
+            tournaments_menu.show_all_rounds(one_tournament)
             self.start()
         elif input == '5':
+            one_tournament = tournaments_controller.get_one(id_tournament)
+            tournaments_menu.show_all_matches(one_tournament)
             self.start()
         elif input == '6':
+            self.tournament_execution()
+            self.start()
+        elif input == '7':
+            self.start()
+        elif input == '8':
+            players.save_to_json()
+            tournaments.save_to_json()   
             tournaments_menu.quit()
         else:
             print("Veuillez choisir une option valide du menu")
             self.start()
 
     def tournament_execution(self):
-        tournaments_view = TournamentsView()
         tournament_controller = TournamentController()
-        players_controller = PlayerController
-        choice, id_tournament = tournaments_view.show_load_create("tournoi")
-        one_tournament = tournament_controller.load_create(choice, id_tournament)
-        nber_players = len(one_tournament.list_players)
-        if nber_players <= 8:
-            nb = 0
-            choice = tournaments_view.show_initialize_players()
-            if choice == 'U':
-                while nb <= 7:
-                    choice, id_player = tournaments_view.show_load_create("joueur")    
-                    one_player = players_controller.load_create(choice, id_player)
-                    print(one_player)
-                    one_tournament.list_players.append(one_player.identifier)
-                    nb = nb+1
-                print(one_tournament.list_players)
-            else:
-                file = tournaments_view.id_players_file()
-                one_tournament.list_players = players_controller.reading_players_json(file)
-                print(one_tournament.list_players)
-        tournament_controller.generate_matchs_firstRound(one_tournament)
-        print(one_tournament.list_rounds)
-    
-        ## Puis saisie les résultats
-        ## Regéner les 3 autres tours.
+        # Select a tournament
+        one_tournament = tournament_controller.select_one_tournament()
+        if one_tournament.list_rounds == []:
+            #add players  to a tournament
+            tournament_controller.add_players_tournament(one_tournament)
+            one_tournament = tournament_controller.generate_matchs_firstRound(one_tournament)
+            print(type(one_tournament.list_rounds[0]))
+            ## grasp scores
+            tournament_controller.enter_scores_round(one_tournament)
+        else:
+            while(len(one_tournament.list_rounds) < 4):
+                tournaments_view = TournamentsView()
+                choice = tournaments_view.start_2to4_rounds()
+                if choice == 'N':
+                    self.start()
+                    break
+                else:
+                    one_tournament = tournament_controller.generate_matchs_2to4Rounds(one_tournament)
+                    tournament_controller.enter_scores_round(one_tournament)
+                    print(one_tournament.serialize())
+        
+        

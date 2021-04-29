@@ -1,7 +1,7 @@
 from views.view import View
 from models.round import Round
 from models.match import Match
-from utils.tournamentsFactory import TournamentsFactory
+from utils.tournament_manager import tournament_manager as tournaments
 
 
 class TournamentsView(View):
@@ -11,19 +11,26 @@ class TournamentsView(View):
 
     def show_one_match(self, match: Match):
         """ function that shows detail of a match """
-        print("Détail d'un match :")
-        print(f"Match {match.name}")
-        print("qui oppose les joueurs suivants")
-        print(f"joueur {match['player1']}")
-        print(f"joueur {match['player2']}")
+        print(match)
+
+    def show_all_matches(self, tournament):
+        """ function that shows all matches of a tournament """
+        list_matches =[]
+        print("Liste de tous les matchs d'un tounoi :")
+        for elt in tournament.list_rounds:
+            for e in elt.matches_list:
+                list_matches.append(e)
+        for elt in list_matches:
+            self.show_one_match(elt)
 
     def show_one_round(self, round: Round):
         """ function that shows element of a round """
-        print("Détail d'un round :")
-        print(f"Round {round.name}")
-        print(f"date de début {round.star_date}")
+        print("Détail d'un tour :")
+        print(f"{round.name}")
+        print(f"date de début: {round.start_date}")
         for elt in round.matches_list:
-            self.show_one_match(elt)
+            print(elt)
+        print(f"date de fin: {round.end_date}")
         
     def show_all_rounds(self, tournament):
         """ function that shows all rounds of a tournament """
@@ -46,16 +53,12 @@ class TournamentsView(View):
 
     def show_all_tournaments(self):
         """ function thats shows all tournaments of the registry"""
-        the_factory = TournamentsFactory.getInstance()
-        print("Liste de tous les tournois")
-        for elt in the_factory.tournaments_registry:
-            print("---------------------------------")
-            self.show_one_tournament(elt)
-            print("---------------------------------")
-
+        print("Liste de tous les tournois:")
+        print(tournaments.find_all())
+        
     def show_initialize_players(self):
         """ function that initialize the list of players"""
-        print("Souahitez vous initialiser la liste des joueurs un à un (U) ou via un fichier(F)")
+        print("Souhaitez-vous initialiser la liste des joueurs un à un (U) ou via un fichier(F)")
         choice = input()
         return choice
 
@@ -64,6 +67,11 @@ class TournamentsView(View):
         print("Veuillez fournir le fichier des identifiants de joueurs:")
         file = input()
         return file
+    
+    def start_2to4_rounds(self):
+        print("Souhaitez - vous poursuivre le suivi d'exécution du tournoi (O/N) ?")
+        choice = input()
+        return choice
 
 
 

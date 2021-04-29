@@ -13,11 +13,11 @@ class PlayersForm(Form):
             "Sexe",
             "Classement",
         ])
-        return Player(
-            dict_data["Prénom"],
-            dict_data['Nom'],
-            dict_data["Date de naissance"],
-            dict_data["Sexe"],
-            dict_data["Classement"],
-            ""
-        )
+        return {
+            "firstname": dict_data["Prénom"],
+            "lastname": dict_data["Nom"],
+            "date_of_birth": dict_data["Date de naissance"],
+            "sexe": dict_data["Sexe"],
+            "rank": dict_data["Classement"]
+        }
+            
