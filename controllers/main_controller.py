@@ -1,10 +1,10 @@
 from utils.player_manager import player_manager as players
 from utils.tournament_manager import tournament_manager as tournaments
-from controllers.playerController import PlayerController
-from controllers.tournamentController import TournamentController
+from controllers.player_controller import PlayerController
+from controllers.tournament_controller import TournamentController
 from views.menu import Menu
-from views.playersView import PlayersView
-from views.tournamentsView import TournamentsView
+from views.player_view import PlayersView
+from views.tournament_view import TournamentView
 
 
 class MainController:
@@ -26,8 +26,8 @@ class MainController:
             input_two, id_tournament = menu.show_tournaments_menu()
             self.start_tournaments_menu(input_two, id_tournament)
         elif one_input == '3':
-            players.save_to_json()
-            tournaments.save_to_json()
+            players.save_to_dbase()
+            tournaments.save_to_dbase()
             menu.quit()
         else:
             print("Veuillez choisir une option valide du menu")
@@ -50,7 +50,7 @@ class MainController:
         elif input == "4":
             self.start()
         elif input == "5":
-            players.save_to_json()
+            players.save_to_dbase()
             tournaments.save_to_json()
             players_menu.quit()
         else:
@@ -59,7 +59,7 @@ class MainController:
             
     def start_tournaments_menu(self, input, id_tournament):
         """ function that stars the tournaments menu"""
-        tournaments_menu = TournamentsView()
+        tournaments_menu = TournamentView()
         tournaments_controller = TournamentController()
         if input == '1':
             tournaments_menu.show_all_tournaments()
@@ -86,7 +86,7 @@ class MainController:
         elif input == '7':
             self.start()
         elif input == '8':
-            players.save_to_json()
+            players.save_to_dbase()
             tournaments.save_to_json()   
             tournaments_menu.quit()
         else:
@@ -94,6 +94,7 @@ class MainController:
             self.start()
 
     def tournament_execution(self):
+        """ function that executes the tournament"""
         tournament_controller = TournamentController()
         # Select a tournament
         one_tournament = tournament_controller.select_one_tournament()
@@ -106,7 +107,7 @@ class MainController:
             tournament_controller.enter_scores_round(one_tournament)
         else:
             while(len(one_tournament.list_rounds) < 4):
-                tournaments_view = TournamentsView()
+                tournaments_view = TournamentView()
                 choice = tournaments_view.start_2to4_rounds()
                 if choice == 'N':
                     self.start()
@@ -114,6 +115,5 @@ class MainController:
                 else:
                     one_tournament = tournament_controller.generate_matchs_2to4Rounds(one_tournament)
                     tournament_controller.enter_scores_round(one_tournament)
-                    print(one_tournament.serialize())
-        
-        
+                    scored_ranking = tournament_controller.players_ranking(one_tournament)
+                    tournaments_view.show_players_ranking(scored_ranking)

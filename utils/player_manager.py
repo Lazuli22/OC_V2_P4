@@ -7,7 +7,7 @@ class PlayerManager(Manager):
 
     def __init__(self):
         super().__init__(Player, key=lambda x: x.identifier)
-    
+
     def load_from_json(self):
         """
         function that loads a json file and
@@ -17,12 +17,6 @@ class PlayerManager(Manager):
             data = json.load(f)
         for elt in data:
             self.create(**elt)
-    
-    def load_from_dbase(self):
-        data = self.db.all()["players"]
-        for elt in data:
-            self.create(**elt)
-    
 
     def save_to_json(self):
         """
@@ -36,8 +30,21 @@ class PlayerManager(Manager):
                 ps = elt.serialize()
                 the_list.append(ps)
             f.write(json.dumps(the_list, indent=3))
-        
+
+    def load_from_dbase(self):
+        """  function that  loads all players from db.json """
+        table_players = self.db.table("players")
+        data = table_players.all()
+        for elt in data:
+            self.create(**elt)
+
     def save_to_dbase(self):
-        pass
+        """ function that stores all players"""
+        players_table = self.db.table("players")
+        players_table.truncate()
+        players = list(self.registry.values())
+        the_list = [elt.serialize() for elt in players]
+        players_table.insert_multiple(the_list)
+
 
 player_manager = PlayerManager()

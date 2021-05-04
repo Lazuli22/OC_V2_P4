@@ -4,7 +4,7 @@ from models.match import Match
 from utils.tournament_manager import tournament_manager as tournaments
 
 
-class TournamentsView(View):
+class TournamentView(View):
 
     def show():
         pass
@@ -15,7 +15,7 @@ class TournamentsView(View):
 
     def show_all_matches(self, tournament):
         """ function that shows all matches of a tournament """
-        list_matches =[]
+        list_matches = []
         print("Liste de tous les matchs d'un tounoi :")
         for elt in tournament.list_rounds:
             for e in elt.matches_list:
@@ -55,7 +55,7 @@ class TournamentsView(View):
         """ function thats shows all tournaments of the registry"""
         print("Liste de tous les tournois:")
         print(tournaments.find_all())
-        
+
     def show_initialize_players(self):
         """ function that initialize the list of players"""
         print("Souhaitez-vous initialiser la liste des joueurs un à un (U) ou via un fichier(F)")
@@ -67,11 +67,23 @@ class TournamentsView(View):
         print("Veuillez fournir le fichier des identifiants de joueurs:")
         file = input()
         return file
-    
+
     def start_2to4_rounds(self):
         print("Souhaitez - vous poursuivre le suivi d'exécution du tournoi (O/N) ?")
         choice = input()
         return choice
+
+    def show_players_ranking(self, list_players):
+        """ function that shows a players ranking"""
+        print("Nouveau classement des joueurs  : ")
+        print("---------------------------------")
+        print("Classement  |   Nom   |   Prenom   |   Rank   |   Score")
+        i = 1
+        for elt in list_players:
+            print(f"{i} -   {elt[0].firstname}   |   {elt[0].lastname}   |   {elt[0].rank}   |   {elt[1]}")
+            i += 1
+
+
 
 
 

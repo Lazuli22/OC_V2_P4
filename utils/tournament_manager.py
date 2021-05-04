@@ -21,8 +21,19 @@ class TournamentManager(Manager):
             f.write(json.dumps(list_tournaments, indent=3))
 
     def save_to_dbase(self):
-        pass
-        
+        """ function that saves all tournaments of the game """
+        tournaments_table = self.db.table("tournaments")
+        tournaments_table.truncate()
+        tournaments = list(self.registry.values())
+        the_list = [elt.serialize() for elt in tournaments]
+        tournaments_table.insert_multiple(the_list)
+
+    def load_from_dbase(self):
+        """ function that loads all tournaments from db.json"""
+        table_tournaments = self.db.table("tournaments")
+        data = table_tournaments.all()
+        for elt in data:
+            self.create(**elt)
 
     def load_from_json(self):
         """
@@ -34,10 +45,7 @@ class TournamentManager(Manager):
         for elt in data:
             self.create(**elt)
     
-    def load_from_dbase(self):
-        data = self.db.all()["tournaments"]
-        for elt in data:
-            self.create(**elt)
+    
 
 
 tournament_manager = TournamentManager()

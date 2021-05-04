@@ -2,7 +2,7 @@ from views.form import Form
 from datetime import datetime
 
 
-class TournamentsForm(Form):
+class TournamentForm(Form):
 
     def createForm_one_tournament(self):
         """ function that can create a tournament"""
@@ -38,9 +38,9 @@ class TournamentsForm(Form):
                 f" {elt.match['player2'][0].lastname}"
                 )
             print("Veuillez saisir le score du 1er joueur :")
-            elt.match["player1"][1] += float(input())
+            elt.match["player1"][1] = float(input())
             print("Veuillez saisir le score du 2nd joueur :")
-            elt.match["player2"][1] += float(input())
+            elt.match["player2"][1] = float(input())
         print("Confirmez-vous la fin du round? (O/N)")
         res = input()
         if res == 'O':

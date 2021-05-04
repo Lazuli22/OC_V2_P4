@@ -26,13 +26,13 @@ class PlayersView(View):
         for elt in list_players:
             print(f"{elt.firstname} {elt.lastname} {elt.rank}")
 
-
     def show_all_players(self):
         """ function that shows all players the players registry """
         print("--------------------------")
         print("Liste de tous les joueurs")
         print("--------------------------")
-        print("Souhaitez - vous une présentation par classement (C) ou par ordre alphabétique (O) ?")
+        print("Souhaitez - vous une présentation par classement (C)")
+        print("ou par ordre alphabétique (O) ?")
         res = input()
         return res
 
@@ -40,7 +40,6 @@ class PlayersView(View):
         """ Function that permits to add players in a tournament """
         print("Ajoutez des joueurs à un tournoi")
         print("Au maximun il ne peut y en avoir huit")
-        nber_players = len()
         print("Souhaitez-vous Creer(C) ou Reprendre (S) un joueur:")
         choice = input()
         if choice == "S":

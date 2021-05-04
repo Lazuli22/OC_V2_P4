@@ -12,6 +12,7 @@ class View(Singleton, metaclass=abc.ABCMeta):
         pass
 
     def show_load_create(self, type_element):
+        """ function that permits a create or load a element"""
         id_element = ""
         print(f"Voulez-vous créer (C) ou reprendre (R) un {type_element} ?")
         choix = input()
@@ -21,8 +22,5 @@ class View(Singleton, metaclass=abc.ABCMeta):
         return choix, id_element
 
     def quit(self):
+        """ function that quits the program """
         print("Sortie du programme ! A bientôt")
-
-
-
-

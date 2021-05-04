@@ -17,13 +17,9 @@ class Round(Serializable):
 
     def __init__(self, name, matches_list, start_date, end_date):
         self.name = name
-        #print(self.name)
         self.matches_list = matches_list
-        #print(self.matches_list)
         self.start_date = start_date
-        #print(self.start_date)
         self.end_date = end_date
-        #print(self.end_date)
 
     @property
     def name(self) -> str:
@@ -52,7 +48,7 @@ class Round(Serializable):
                 self.__matches_list.append(elt)
             else:
                 raise AttributeError("Erreur sur la création d'un Match")
-        #print(self.matches_list)
+        
 
     @property
     def start_date(self) -> datetime:
@@ -67,11 +63,11 @@ class Round(Serializable):
                 try:
                     self.__start_date = datetime.fromisoformat(start_date)
                 except ValueError:
-                    raise AttributeError("impossible to determine the date")
+                    raise AttributeError("impossible de déterminer une date")
             elif isinstance(start_date, datetime):
                 self.__start_date = start_date
             else:
-                raise AttributeError("Impossible de déterminer la date")
+                raise AttributeError("Impossible de déterminer une date")
 
     @property
     def end_date(self) -> datetime:

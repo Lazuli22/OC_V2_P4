@@ -1,5 +1,4 @@
 from models.seriable import Serializable
-from typing import Union
 from models.player import Player
 
 
@@ -25,7 +24,6 @@ class Match(Serializable):
             self.match['player2'] = [player2, float(r2)]
         else:
             raise AttributeError("Erreur sur l'instanciation d'un joueur 2 et de son résultat")
-        #print(self.match)
   
     def __repr__(self) -> str:
         """Function that represents a match"""

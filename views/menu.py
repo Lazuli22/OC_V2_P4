@@ -4,6 +4,7 @@ from views.view import View
 class Menu(View):
 
     def show(self, titre, options):
+        """ function that shows a menu"""
         print(titre)
         print("Que souhaitez-vous faire ? :")
         for k, option in enumerate(options, start=1):

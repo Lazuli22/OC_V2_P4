@@ -8,7 +8,7 @@ from models.constants import REGEX
 
 
 class Player(Serializable):
-    """ Class define a player who is characteriszed :
+    """ Class defines a player who is characteriszed :
     - uuid
     - firstname
     - lastname

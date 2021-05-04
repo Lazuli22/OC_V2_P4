@@ -1,8 +1,7 @@
 from views.form import Form
-from models.player import Player
 
 
-class PlayersForm(Form):
+class PlayerForm(Form):
 
     def createForm_one_player(self):
         """ function that can create a player"""

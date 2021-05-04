@@ -1,7 +1,7 @@
 import json
 import uuid
 from operator import attrgetter
-from views.playersForm import PlayersForm
+from views.player_form import PlayerForm
 from controllers.controller import Controller
 from utils.player_manager import player_manager as players
 
@@ -10,11 +10,12 @@ class PlayerController(Controller):
 
     def create_one_player(self):
         """ function that creates a new player  """
-        one_player = PlayersForm().createForm_one_player()
+        one_player = PlayerForm().createForm_one_player()
         players.create(**one_player)
         return one_player
 
     def players_sort(self, one_sort):
+        """ function that shows a sorted list players """
         players_list = players.find_all()
         if one_sort == 'C':
             sorted_list = sorted(

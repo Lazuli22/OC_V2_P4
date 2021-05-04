@@ -5,8 +5,6 @@ from enum import Enum
 import uuid
 import re
 import datetime
-from itertools import combinations
-
 from models.seriable import Serializable
 
 
@@ -20,6 +18,7 @@ class Tournament(Serializable):
     - list players
     - time rule
     - description
+    - list of dones matches
     """
 
     Time_Rule = Enum('TRule', 'Bullet Blitz Quick_Hit')
@@ -56,7 +55,6 @@ class Tournament(Serializable):
             errors.append(f"nombre de tours: {str(e)}")
         try:
             self.list_rounds = list_rounds
-            print(self.list_rounds)
         except AttributeError as e:
             errors.append(f"liste de rounds :{str(e)}")
         try:
@@ -72,7 +70,8 @@ class Tournament(Serializable):
         except AttributeError as e:
             errors.append(f"description: {str(e)}")
         date = str(self.date)
-        self.identifier = identifier if identifier else f"{self.name}_{self.location}_{date}"
+        self.identifier = identifier if identifier else \
+            f"{self.name}_{self.location}_{date}"
         self.matches_dones = matches_dones
 
     @property
@@ -126,10 +125,8 @@ class Tournament(Serializable):
         self.__list_rounds = []
         for elt in list_rounds:
             if isinstance(elt, dict):
-                #print(elt)
                 one_round = Round(**elt)
                 self.__list_rounds.append(one_round)
-                #print(self.list_rounds)
             elif isinstance(elt, Round):
                 self.__list_rounds.append(elt)
             else:
@@ -166,21 +163,14 @@ class Tournament(Serializable):
                 )
 
     @property
-    def description(self):
+    def description(self) -> str:
         return self.__description
 
     @description.setter
-    def description(self, description):
+    def description(self, description: str):
         if description is not None:
             self.__description = description
 
-    def list_identifiers_players(liste_players):
-        """ function that gives a list id of players """
-        list_id_players = []
-        for elt in liste_players:
-            list_id_players.append(elt.identifier)
-        return list_id_players
-    
     def serialize(self):
         """ Function that seralizes a tournament.
             In output, it gives a dict of data keys/values
@@ -206,7 +196,7 @@ class Tournament(Serializable):
                 }
     
     def __repr__(self) -> str:
-        """ function that represents a tournament - todo simplier l'affichage"""
+        """ function that represents a tournament """
         return (
             f"{self.__name},"
             f"{self.__location}, "
