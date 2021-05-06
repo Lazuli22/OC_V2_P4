@@ -1,5 +1,5 @@
-import json
 import uuid
+import json
 from operator import attrgetter
 from views.player_form import PlayerForm
 from controllers.controller import Controller
@@ -8,10 +8,22 @@ from utils.player_manager import player_manager as players
 
 class PlayerController(Controller):
 
-    def create_one_player(self):
+    def create_one(self):
         """ function that creates a new player  """
         one_player = PlayerForm().createForm_one_player()
         players.create(**one_player)
+        return one_player
+
+    def modify_one_player(self, id_player):
+        """  function that modifies a player rank"""
+        one_player = self.get_one(id_player)
+        PlayerForm().modifyForm_one_player(one_player)
+        return one_player
+
+    def get_one(self, id_player):
+        """ function that finds a player with its identifier"""
+        id_player = uuid.UUID(id_player)
+        one_player = players.find_by_id(id_player)
         return one_player
 
     def players_sort(self, one_sort):
@@ -30,24 +42,20 @@ class PlayerController(Controller):
         else:
             print("pas d ordre défini")
         return sorted_list
-        
-    def get_one(self, id_player):
-        id_player = uuid.UUID(id_player)
-        one_player = players.find_by_id(id_player)
-        return one_player
 
     def load_create(self, choice, id_element):
+        """ Function that gives the choix to load or create a player """
         if choice == 'C':
-            one_player = self.create_one_player()
+            one_player = self.create_one()
         elif choice == "R":
             one_player = self.get_one(id_element)
         else:
             raise(Exception("Veuillez choisir une option valide"))
         return one_player
 
-    def reading_players_json(self, nom):
+    def players_json(self, nom):
         """
-        function that read a json file and 
+        function that read a json file and
         produces a list of id players
         """
         id_liste_players = []
@@ -58,4 +66,3 @@ class PlayerController(Controller):
                 elt["player"]["identifier"]
             )
         return id_liste_players
-  

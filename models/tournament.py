@@ -33,7 +33,7 @@ class Tournament(Serializable):
             time_rule,
             description,
             matches_dones,
-            identifier, 
+            identifier,
             date=None
             ):
         errors = []
@@ -138,6 +138,7 @@ class Tournament(Serializable):
 
     @list_players.setter
     def list_players(self, new_players: list[uuid.UUID]):
+        self.__list_players = []
         if new_players is not None:
             if len(new_players) != 8:
                 raise AttributeError("Erreur sur les joueurs")
@@ -179,7 +180,6 @@ class Tournament(Serializable):
         list_matches_dones = []
         for elt in self.list_rounds:
             list_rounds.append(elt.serialize())
-        print(self.matches_dones)
         for elt in self.matches_dones:
             list_matches_dones.append(str(elt))
         return {
@@ -198,14 +198,14 @@ class Tournament(Serializable):
     def __repr__(self) -> str:
         """ function that represents a tournament """
         return (
-            f"{self.__name},"
-            f"{self.__location}, "
-            f"{self.__date}, "
-            f"{self.__list_rounds}, "
-            f"{self.__list_players}, "
-            f"{self.__time_rule.name}, "
+            f"{self.name},"
+            f"{self.location}, "
+            f"{self.date}, "
+            f"{self.list_rounds}, "
+            f"{self.list_players}, "
+            f"{self.time_rule.name}, "
             f"{self.matches_dones}, "
-            f"{self.__description}, "
+            f"{self.description}, "
             f"{self.identifier} "
             "\n"
         )

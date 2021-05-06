@@ -115,9 +115,7 @@ env.bak/
 venv.bak/
 
 # Resultats du scripts 
-data/
-Resultats.PNG 
-test.py
+flake-report/
 
 # Spyder project settings
 .spyderproject

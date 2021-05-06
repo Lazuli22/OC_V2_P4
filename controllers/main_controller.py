@@ -26,37 +26,43 @@ class MainController:
             input_two, id_tournament = menu.show_tournaments_menu()
             self.start_tournaments_menu(input_two, id_tournament)
         elif one_input == '3':
-            players.save_to_dbase()
-            tournaments.save_to_dbase()
             menu.quit()
         else:
             print("Veuillez choisir une option valide du menu")
             self.start()
+        players.save_to_dbase()
+        tournaments.save_to_dbase()
 
     def start_players_menu(self, input, id_player):
         """ function that shows the players menu"""
         players_menu = PlayersView()
         if input == "1":
             one_sort = players_menu.show_all_players()
-            players_menu.show_sorted_players(PlayerController().players_sort(one_sort))
+            players_menu.show_sorted_players(
+                        PlayerController().players_sort(one_sort)
+                        )
             self.start()
         elif input == "2":
             one_player = PlayerController().get_one(id_player)
             players_menu.show_one_player(one_player)
             self.start()
         elif input == "3":
-            PlayerController().create_one_player()
+            one_player = PlayerController().modify_one_player(id_player)
+            players_menu.show_one_player(one_player)
             self.start()
         elif input == "4":
+            PlayerController().create_one()
             self.start()
         elif input == "5":
-            players.save_to_dbase()
-            tournaments.save_to_json()
+            self.start()
+        elif input == "6":
             players_menu.quit()
         else:
             print("Veuillez choisir une option valide du menu")
             self.start()
-            
+        players.save_to_dbase()
+        tournaments.save_to_dbase()
+
     def start_tournaments_menu(self, input, id_tournament):
         """ function that stars the tournaments menu"""
         tournaments_menu = TournamentView()
@@ -69,7 +75,8 @@ class MainController:
             tournaments_menu.show_one_tournament(one_tournament)
             self.start()
         elif input == '3':
-            one_tournament = tournaments_controller.create_one_tournement()
+            one_tournament = tournaments_controller.create_one()
+            print(one_tournament)
             tournaments_menu.show_one_tournament(one_tournament)
             self.start()
         elif input == '4':
@@ -86,12 +93,12 @@ class MainController:
         elif input == '7':
             self.start()
         elif input == '8':
-            players.save_to_dbase()
-            tournaments.save_to_json()   
             tournaments_menu.quit()
         else:
             print("Veuillez choisir une option valide du menu")
             self.start()
+        players.save_to_dbase()
+        tournaments.save_to_dbase()
 
     def tournament_execution(self):
         """ function that executes the tournament"""
@@ -99,11 +106,10 @@ class MainController:
         # Select a tournament
         one_tournament = tournament_controller.select_one_tournament()
         if one_tournament.list_rounds == []:
-            #add players  to a tournament
             tournament_controller.add_players_tournament(one_tournament)
-            one_tournament = tournament_controller.generate_matchs_firstRound(one_tournament)
-            print(type(one_tournament.list_rounds[0]))
-            ## grasp scores
+            one_tournament = tournament_controller.generate_matchs_firstRound(
+                            one_tournament
+                            )
             tournament_controller.enter_scores_round(one_tournament)
         else:
             while(len(one_tournament.list_rounds) < 4):
@@ -113,7 +119,13 @@ class MainController:
                     self.start()
                     break
                 else:
-                    one_tournament = tournament_controller.generate_matchs_2to4Rounds(one_tournament)
+                    one_tournament = tournament_controller.matchs_2to4Rounds(
+                        one_tournament
+                        )
                     tournament_controller.enter_scores_round(one_tournament)
-                    scored_ranking = tournament_controller.players_ranking(one_tournament)
+                    scored_ranking = tournament_controller.players_ranking(
+                        one_tournament
+                        )
                     tournaments_view.show_players_ranking(scored_ranking)
+        players.save_to_dbase()
+        tournaments.save_to_dbase()

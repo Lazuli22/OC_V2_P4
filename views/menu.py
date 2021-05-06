@@ -13,7 +13,9 @@ class Menu(View):
     def show_main_menu(self):
         """ function that shows the main menu """
         self.show(
-            "---Bienvenue sur l'outil de gestion des tournois d'echecs---",
+            "----------------------------------------------------------\n"
+            "| Bienvenue sur l'outil de gestion des tournois d'echecs |\n"
+            "----------------------------------------------------------\n",
             ["Gérer les joueurs",
              "Gérer les tournois",
              "Quitter"]
@@ -25,7 +27,9 @@ class Menu(View):
         """function that shows the tournaments menu """
         id_tournament = ""
         self.show(
-            "Menu des tournois :",
+            "---------------------\n"
+            "| Menu des tournois |\n"
+            "---------------------\n",
             ["Consulter tous les tournois ",
              "Consulter un tournoi en particulier",
              "Créer un tournoi",
@@ -41,27 +45,27 @@ class Menu(View):
             print("Veuillez fournir l'idenfiant du tournoi à consulter :")
             id_tournament = input()
         elif one_input == "3":
-            print("Ajout d'un joueur au sein du registre des joueurs")
+            print("Ajout d'un tournoi sein du registre des tournois")
         return (one_input, id_tournament)
 
     def show_players_menu(self):
         """function that shows the players menu """
         id_player = ""
         self.show(
-            "Menu des joueurs : ",
+            "--------------------\n"
+            "| Menu des joueurs |\n"
+            "--------------------\n",
             ["Consulter tous les joueurs",
              "Consulter un joueur en particulier",
+             "Modifier le classement d'un joueur en particulier",
              "Créer un joueur",
              "Revenir au menu précédent",
              "Quitter"]
             )
         one_input = input()
-        if one_input == "2":
-            print("Veuillez fournir l'idenfiant du joueur à consulter :")
+        if one_input == "2" or one_input == "3":
+            print("Veuillez fournir l'idenfiant du joueur à consulter/modifier :")
             id_player = input()
-        elif one_input == "3":
+        elif one_input == "4":
             print("Ajout d'un joueur au sein du registre des joueurs")
         return (one_input, id_player)
-
-    
-    

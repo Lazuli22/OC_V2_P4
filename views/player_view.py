@@ -1,6 +1,6 @@
 from views.view import View
 from models.player import Player
-from utils.player_manager import player_manager as players
+from terminaltables import AsciiTable
 
 
 class PlayersView(View):
@@ -10,13 +10,16 @@ class PlayersView(View):
 
     def show_one_player(self, one_player: Player):
         """function that shows one player """
-        print("")
-        print(f"Détail du joueur {one_player.firstname} {one_player.lastname}")
-        print(f"date de naissance: {one_player.date_of_birth}")
-        print(f"sexe: {one_player.sexe}")
-        print(f"classement: {one_player.rank}")
-        print(f"identifiant: {one_player.identifier}")
-        print("")
+        table_player = (
+            ("Nom", "Prénom", "Date de Naissance", "Sexe", "Classement"),
+            (one_player.firstname,
+                one_player.lastname,
+                one_player.date_of_birth,
+                one_player.sexe,
+                one_player.rank))
+        table_instance = AsciiTable(table_player, "Informations d'un joueur")
+        table_instance.justify_columns[2] = 'left'
+        print(table_instance.table)
 
     def show_sorted_players(self, list_players):
         """ function that shows a sorted list of players """
@@ -46,19 +49,3 @@ class PlayersView(View):
             print("Veuillez fournir l'idenfiant du joueur à reprendre")
             id_player = input()
         return choice, id_player
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

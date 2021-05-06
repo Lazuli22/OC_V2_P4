@@ -19,4 +19,14 @@ class PlayerForm(Form):
             "sexe": dict_data["Sexe"],
             "rank": dict_data["Classement"]
         }
+
+    def modifyForm_one_player(self, one_player):
+        """ fonction that modifies a rank player """
+        new_rank = 0
+        print("Veuillez fournir le nouveau classement du joueur : ")
+        print(f"{one_player.firstname} {one_player.lastname}")
+        new_rank = input()
+        one_player.rank = int(new_rank)
+     
+
             

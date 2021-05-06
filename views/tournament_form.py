@@ -22,6 +22,7 @@ class TournamentForm(Form):
             "list_players": [],
             "time_rule": dict_data["Règle de jeu"],
             "description": dict_data["Description"],
+            "matches_dones": [],
             "identifier": ""
             }
 
