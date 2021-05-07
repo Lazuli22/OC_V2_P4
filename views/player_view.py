@@ -24,7 +24,7 @@ class PlayersView(View):
     def show_sorted_players(self, list_players):
         """ function that shows a sorted list of players """
         print("--------------------------")
-        print("Liste triée des joueurs ")
+        print(" Liste triée des joueurs  ")
         print("--------------------------")
         for elt in list_players:
             print(f"{elt.firstname} {elt.lastname} {elt.rank}")
