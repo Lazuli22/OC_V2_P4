@@ -27,6 +27,3 @@ class PlayerForm(Form):
         print(f"{one_player.firstname} {one_player.lastname}")
         new_rank = input()
         one_player.rank = int(new_rank)
-     
-
-            

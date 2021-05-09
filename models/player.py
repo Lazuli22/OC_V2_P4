@@ -19,7 +19,7 @@ class Player(Serializable):
     """
 
     Sexe = Enum('Sexe', 'Male Female Transgender Hermaphrodite')
-    
+
     def __init__(
             self,
             firstname,
@@ -165,7 +165,7 @@ class Player(Serializable):
         )
 
     def serialize(self):
-        """ 
+        """
         function that serialize an object Player.
         In output, the function gives a dict of data
         """

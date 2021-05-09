@@ -48,7 +48,6 @@ class Round(Serializable):
                 self.__matches_list.append(elt)
             else:
                 raise AttributeError("Erreur sur la création d'un Match")
-        
 
     @property
     def start_date(self) -> datetime:
@@ -89,7 +88,7 @@ class Round(Serializable):
                 raise AttributeError("Impossible de déterminer la date")
 
     def serialize(self) -> dict[str, str]:
-        """ 
+        """
         function that serializes a round and
         in output gives a dict of data
         """

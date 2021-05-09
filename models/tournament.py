@@ -83,7 +83,10 @@ class Tournament(Serializable):
         if re.search(REGEX, value):
             self.__name = value
         else:
-            print("Attention the name tournament includes other things than letters !")
+            print(
+                "Attention the name tournament"
+                "includes other things than letters !"
+            )
 
     @property
     def location(self) -> str:
@@ -94,7 +97,10 @@ class Tournament(Serializable):
         if re.search(REGEX, value):
             self.__location = value
         else:
-            print("Attention the location name includes other thnings thant letters!")
+            print(
+                "Attention the location name"
+                "includes other thnings thant letters!"
+                )
 
     @ property
     def date(self) -> datetime.date:
@@ -131,7 +137,7 @@ class Tournament(Serializable):
                 self.__list_rounds.append(elt)
             else:
                 raise AttributeError("Erreur sur la création d'un Round")
-       
+
     @property
     def list_players(self) -> list[uuid.UUID]:
         return self.__list_players
@@ -194,7 +200,7 @@ class Tournament(Serializable):
                 "matches_dones": list_matches_dones,
                 "identifier": self.identifier
                 }
-    
+
     def __repr__(self) -> str:
         """ function that represents a tournament """
         return (

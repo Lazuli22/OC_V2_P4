@@ -31,7 +31,7 @@ class TournamentView(View):
         for elt in round.matches_list:
             print(elt)
         print(f"date de fin: {round.end_date}")
-        
+
     def show_all_rounds(self, tournament):
         """ function that shows all rounds of a tournament """
         print("Liste de tous les tours d'un tounoi :")
@@ -63,7 +63,7 @@ class TournamentView(View):
         return choice
 
     def id_players_file(self):
-        """ function that gives a id players file """   
+        """ function that gives a id players file """
         print("Veuillez fournir le fichier des identifiants de joueurs:")
         file = input()
         return file
@@ -80,18 +80,6 @@ class TournamentView(View):
         print("Classement  |   Nom   |   Prenom   |   Rank   |   Score")
         i = 1
         for elt in list_players:
-            print(f"{i} -   {elt[0].firstname}   |   {elt[0].lastname}   |   {elt[0].rank}   |   {elt[1]}")
+            print(f"{i} -   {elt[0].firstname}")
+            print(f"{elt[0].lastname}   |   {elt[0].rank}   |   {elt[1]}")
             i += 1
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -75,10 +75,10 @@ class TournamentController(Controller):
                     reverse=True
                     )
         tournament.matches_dones += [
-                list_triee[0].identifier+":"+list_triee[4].identifier,
-                list_triee[1].identifier+":"+list_triee[5].identifier,
-                list_triee[2].identifier+":"+list_triee[6].identifier,
-                list_triee[3].identifier+":"+list_triee[7].identifier
+                f"{list_triee[0].identifier}:{list_triee[4].identifier}",
+                f"{list_triee[1].identifier}:{list_triee[5].identifier}",
+                f"{list_triee[2].identifier}:{list_triee[6].identifier}",
+                f"{list_triee[3].identifier}:{list_triee[7].identifier}"
             ]
         tournament.list_rounds.append(Round("Round 1", [
             Match("Match1", list_triee[0], 0, list_triee[4], 0),
@@ -145,7 +145,7 @@ class TournamentController(Controller):
             sorted_only_players.append([elt[0], elt[2]])
         matches_list = tournament.list_players
         matches_dones = tournament.matches_dones
-        matches_comb = [self.sort_two_players(p1, p2)
+        matches_comb = [self.sort_play(p1, p2)
                         for p1, p2 in combinations(matches_list, 2)]
         matches_diff = self.diff_list_matches(matches_comb, matches_dones)
         matches_for_next_round = []

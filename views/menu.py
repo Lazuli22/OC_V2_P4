@@ -64,7 +64,7 @@ class Menu(View):
             )
         one_input = input()
         if one_input == "2" or one_input == "3":
-            print("Veuillez fournir l'idenfiant du joueur à consulter/modifier :")
+            print("Fournir l'idenfiant du joueur à consulter/modifier:")
             id_player = input()
         elif one_input == "4":
             print("Ajout d'un joueur au sein du registre des joueurs")

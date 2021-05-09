@@ -3,7 +3,7 @@ from models.player import Player
 
 
 class PlayerManager(Manager):
-    """ 
+    """
     Class that permits to create a players registry
     """
     def __init__(self):

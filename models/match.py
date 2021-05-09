@@ -13,18 +13,20 @@ class Match(Serializable):
         self.name = name
         self.match = {}
         if isinstance(player1, dict):
-            self.match['player1'] = [Player(**player1), float(r1)]    
+            self.match['player1'] = [Player(**player1), float(r1)]
         elif isinstance(player1, Player):
             self.match['player1'] = [player1, float(r1)]
         else:
-            raise AttributeError("Erreur sur l'instanciation d'un joueur 1 et de son résultat")
+            raise AttributeError(
+                "Erreur sur l'instanciation d'un joueur 1 et de son résultat")
         if isinstance(player2, dict):
             self.match['player2'] = [Player(**player2), float(r2)]
         elif isinstance(player2, Player):
             self.match['player2'] = [player2, float(r2)]
         else:
-            raise AttributeError("Erreur sur l'instanciation d'un joueur 2 et de son résultat")
-  
+            raise AttributeError(
+                "Erreur sur l'instanciation d'un joueur 2 et de son résultat")
+
     def __repr__(self) -> str:
         """Function that represents a match"""
         return (

@@ -16,5 +16,3 @@ class Controller(Singleton, metaclass=abc.ABCMeta):
     @abc.abstractclassmethod
     def load_create(self, choice, id_element):
         pass
-
-    
