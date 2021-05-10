@@ -31,8 +31,9 @@ class Menu(View):
             "| Menu des tournois |\n"
             "---------------------\n",
             ["Consulter tous les tournois ",
-             "Consulter un tournoi en particulier",
              "Créer un tournoi",
+             "Consulter un tournoi en particulier",
+             "Consulter tous les joueurs d'un tournoi",
              "Consulter tous les rounds d'un tournoi",
              "Consulter tous les matchs d'un tournoi",
              "Suivre la réalisation d'un tournoi",
@@ -41,10 +42,10 @@ class Menu(View):
              ]
             )
         one_input = input()
-        if one_input in ["2", "4", "5"]:
+        if one_input in ["3", "4", "5", "6"]:
             print("Veuillez fournir l'idenfiant du tournoi à consulter :")
             id_tournament = input()
-        elif one_input == "3":
+        elif one_input == "2":
             print("Ajout d'un tournoi sein du registre des tournois")
         return (one_input, id_tournament)
 

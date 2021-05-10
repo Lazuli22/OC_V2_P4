@@ -1,5 +1,6 @@
 from utils.manager import Manager
 from models.player import Player
+import json
 
 
 class PlayerManager(Manager):
@@ -13,6 +14,13 @@ class PlayerManager(Manager):
     def load_from_dbase(self):
         """  function that  loads all players from db.json """
         data = self.table_players.all()
+        for elt in data:
+            self.create(**elt)
+
+    def load_from_json(self, nom):
+        """  function that  loads all players from players.json """
+        with open(nom) as f:
+            data = json.load(f)
         for elt in data:
             self.create(**elt)
 

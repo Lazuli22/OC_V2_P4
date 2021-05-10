@@ -7,14 +7,14 @@ from controllers.player_controller import PlayerController
 from models.match import Match
 from models.round import Round
 from utils.tournament_manager import tournament_manager as tournaments
+from utils.player_manager import player_manager as players
 
 
 class TournamentController(Controller):
 
     def create_one(self):
         """ function that creates a new tournement """
-        form = TournamentForm()
-        one_tournament = form.createForm_one_tournament()
+        one_tournament = TournamentForm().createForm_one_tournament()
         the_tournament = tournaments.create(**one_tournament)
         return the_tournament
 
@@ -59,9 +59,8 @@ class TournamentController(Controller):
                     nb = nb+1
             else:
                 file = tournaments_view.id_players_file()
-                one_tournament.list_players = PlayerController().players_json(
-                    file
-                    )
+                players.load_from_json(file)
+                one_tournament.list_players = PlayerController().players_json(file)
 
     def generate_matchs_firstRound(self, tournament):
         """ function that generates matchs for the 1er Round """
@@ -215,7 +214,6 @@ class TournamentController(Controller):
                 list_players.append(player1)
                 player2 = match.match["player2"]
                 list_players.append(player2)
-        print(list_players)
         for e in list_players:
             if e[0].identifier not in result:
                 result[e[0].identifier] = [e[0], e[1]]

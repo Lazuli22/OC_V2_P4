@@ -2,6 +2,7 @@ from views.view import View
 from models.round import Round
 from models.match import Match
 from utils.tournament_manager import tournament_manager as tournaments
+from terminaltables import AsciiTable
 
 
 class TournamentView(View):
@@ -42,7 +43,7 @@ class TournamentView(View):
 
     def show_one_tournament(self, tournament):
         """ function that shows elements of a tournament"""
-        print("")
+        print("-----------------------")
         print("Détail d'un tournoi :")
         print(f"Tournoi n°{tournament.identifier}, de nom : {tournament.name}")
         print(f"Règle de jeu : {tournament.time_rule.name}")
@@ -53,8 +54,17 @@ class TournamentView(View):
 
     def show_all_tournaments(self):
         """ function thats shows all tournaments of the registry"""
-        print("Liste de tous les tournois:")
-        print(tournaments.find_all())
+        all_tournaments = tournaments.find_all()
+        list_tournaments = [("Nom", "Lieu", "Date", "Règle de jeu", "Description")]
+        for elt in all_tournaments:
+            list_tournaments.append(
+                            [elt.name,
+                                elt.location,
+                                elt.date,
+                                elt.time_rule.name,
+                                elt.description])
+        table_instance = AsciiTable(list_tournaments, "Liste des tournois")
+        print(table_instance.table)
 
     def show_initialize_players(self):
         """ function that initialize the list of players"""
@@ -64,7 +74,7 @@ class TournamentView(View):
 
     def id_players_file(self):
         """ function that gives a id players file """
-        print("Veuillez fournir le fichier des identifiants de joueurs:")
+        print("Veuillez fournir le fichier des joueurs:")
         file = input()
         return file
 
@@ -75,11 +85,18 @@ class TournamentView(View):
 
     def show_players_ranking(self, list_players):
         """ function that shows a players ranking"""
-        print("Nouveau classement des joueurs  : ")
-        print("---------------------------------")
-        print("Classement  |   Nom   |   Prenom   |   Rank   |   Score")
+        print("----------------------------------------------------")
+        lplayers = []
+        lplayers = [("Ordre", "Nom", "Prénom", "Classement", "Score")]
         i = 1
         for elt in list_players:
-            print(f"{i} -   {elt[0].firstname}")
-            print(f"{elt[0].lastname}   |   {elt[0].rank}   |   {elt[1]}")
+            lplayers.append(
+                            [i,
+                                elt[0].firstname,
+                                elt[0].lastname,
+                                elt[0].rank,
+                                elt[1]]
+                            )
             i += 1
+        table_instance = AsciiTable(lplayers, "Classement des joueurs")
+        print(table_instance.table)

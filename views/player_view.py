@@ -12,8 +12,8 @@ class PlayersView(View):
         """function that shows one player """
         table_player = (
             ("Nom", "Prénom", "Date de Naissance", "Sexe", "Classement"),
-            (one_player.firstname,
-                one_player.lastname,
+            (one_player.lastname,
+                one_player.firstname,
                 one_player.date_of_birth,
                 one_player.sexe,
                 one_player.rank))
@@ -23,11 +23,12 @@ class PlayersView(View):
 
     def show_sorted_players(self, list_players):
         """ function that shows a sorted list of players """
-        print("--------------------------")
-        print(" Liste triée des joueurs  ")
-        print("--------------------------")
+        table_player = [('Nom', 'Prénom', 'Classement')]
         for elt in list_players:
-            print(f"{elt.firstname} {elt.lastname} {elt.rank}")
+            table_player.append([elt.lastname, elt.firstname, elt.rank])
+        table_instance = AsciiTable(table_player, "Liste triée des joueurs")
+        table_instance.justify_columns[2] = 'left'
+        print(table_instance.table)
 
     def show_all_players(self):
         """ function that shows all players the players registry """

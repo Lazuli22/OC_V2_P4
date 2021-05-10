@@ -11,8 +11,7 @@ class PlayerController(Controller):
     def create_one(self):
         """ function that creates a new player  """
         one_player = PlayerForm().createForm_one_player()
-        players.create(**one_player)
-        return one_player
+        return players.create(**one_player)
 
     def modify_one_player(self, id_player):
         """  function that modifies a player rank"""
@@ -26,9 +25,15 @@ class PlayerController(Controller):
         one_player = players.find_by_id(id_player)
         return one_player
 
-    def players_sort(self, one_sort):
+    def players_sort(self, one_sort, one_tournament):
         """ function that shows a sorted list players """
-        players_list = players.find_all()
+        players_list = []
+        if one_tournament is None:
+            players_list = players.find_all()
+        else:
+            for elt in one_tournament.list_players:
+                id_player = uuid.UUID(elt)
+                players_list.append(players.find_by_id(id_player))
         if one_sort == 'C':
             sorted_list = sorted(
                                 players_list,
@@ -37,7 +42,7 @@ class PlayerController(Controller):
         elif one_sort == 'O':
             sorted_list = sorted(
                         players_list,
-                        key=lambda x: (x.firstname, x.lastname)
+                        key=lambda x: (x.lastname, x.firstname)
                         )
         else:
             print("pas d ordre défini")
@@ -63,6 +68,6 @@ class PlayerController(Controller):
             data = json.load(f)
         for elt in data:
             id_liste_players.append(
-                elt["player"]["identifier"]
+                elt["identifier"]
             )
         return id_liste_players
