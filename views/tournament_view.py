@@ -1,6 +1,7 @@
 from views.view import View
 from models.round import Round
 from models.match import Match
+from models.tournament import Tournament
 from utils.tournament_manager import tournament_manager as tournaments
 from terminaltables import AsciiTable
 
@@ -14,7 +15,7 @@ class TournamentView(View):
         """ function that shows detail of a match """
         print(match)
 
-    def show_all_matches(self, tournament):
+    def show_all_matches(self, tournament: Tournament):
         """ function that shows all matches of a tournament """
         list_matches = []
         print("Liste de tous les matchs d'un tounoi :")
@@ -33,7 +34,7 @@ class TournamentView(View):
             print(elt)
         print(f"date de fin: {round.end_date}")
 
-    def show_all_rounds(self, tournament):
+    def show_all_rounds(self, tournament: Tournament):
         """ function that shows all rounds of a tournament """
         print("Liste de tous les tours d'un tounoi :")
         for elt in tournament.list_rounds:
@@ -41,7 +42,7 @@ class TournamentView(View):
             self.show_one_round(elt)
             print("--------------------")
 
-    def show_one_tournament(self, tournament):
+    def show_one_tournament(self, tournament: Tournament):
         """ function that shows elements of a tournament"""
         print("-----------------------")
         print("Détail d'un tournoi :")
@@ -73,30 +74,18 @@ class TournamentView(View):
         return choice
 
     def id_players_file(self):
-        """ function that gives a id players file """
+        """ function can enter a id players file """
         print("Veuillez fournir le fichier des joueurs:")
         file = input()
         return file
 
     def start_2to4_rounds(self):
+        """function that  """
         print("Souhaitez - vous poursuivre le suivi d'exécution du tournoi (O/N) ?")
         choice = input()
         return choice
 
-    def show_players_ranking(self, list_players):
-        """ function that shows a players ranking"""
-        print("----------------------------------------------------")
-        lplayers = []
-        lplayers = [("Ordre", "Nom", "Prénom", "Classement", "Score")]
-        i = 1
-        for elt in list_players:
-            lplayers.append(
-                            [i,
-                                elt[0].firstname,
-                                elt[0].lastname,
-                                elt[0].rank,
-                                elt[1]]
-                            )
-            i += 1
-        table_instance = AsciiTable(lplayers, "Classement des joueurs")
-        print(table_instance.table)
+    def show_tournament_done(self, one_tournament: Tournament):
+        print(" ------------------------------------------------------")
+        print(f" {one_tournament.name} du {one_tournament.date} terminé")
+        print(f"Description du tournoi : {one_tournament.description}")

@@ -117,7 +117,7 @@ class MainController:
                             )
             tournament_controller.enter_scores_round(one_tournament)
             scored_ranking = tournament_controller.players_ranking(one_tournament)
-            TournamentView().show_players_ranking(scored_ranking)
+            PlayersView().show_players_ranking(scored_ranking)
         else:
             while(len(one_tournament.list_rounds) < 4):
                 choice = TournamentView().start_2to4_rounds()
@@ -132,6 +132,8 @@ class MainController:
                     scored_ranking = tournament_controller.players_ranking(
                         one_tournament
                         )
-                    TournamentView().show_players_ranking(scored_ranking)
+                    PlayersView().show_players_ranking(scored_ranking)
+        if len(one_tournament.list_rounds) == 4:
+            tournament_controller.close_tournament(one_tournament)
         players.save_to_dbase()
         tournaments.save_to_dbase()
