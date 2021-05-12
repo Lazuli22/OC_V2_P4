@@ -21,13 +21,31 @@ class PlayersView(View):
         table_instance.justify_columns[2] = 'left'
         print(table_instance.table)
 
-    def show_sorted_players(self, list_players):
+    def show_sorted_players(self, list_players: list[Player]):
         """ function that shows a sorted list of players """
         table_player = [('Nom', 'Prénom', 'Classement')]
         for elt in list_players:
             table_player.append([elt.lastname, elt.firstname, elt.rank])
         table_instance = AsciiTable(table_player, "Liste triée des joueurs")
         table_instance.justify_columns[2] = 'left'
+        print(table_instance.table)
+
+    def show_players_ranking(self, list_players: list[Player]):
+        """ function that shows a players ranking"""
+        print("----------------------------------------------------")
+        lplayers = []
+        lplayers = [("Ordre", "Nom", "Prénom", "Classement", "Score")]
+        i = 1
+        for elt in list_players:
+            lplayers.append(
+                            [i,
+                                elt[0].firstname,
+                                elt[0].lastname,
+                                elt[0].rank,
+                                elt[1]]
+                            )
+            i += 1
+        table_instance = AsciiTable(lplayers, "Classement des joueurs")
         print(table_instance.table)
 
     def show_all_players(self):

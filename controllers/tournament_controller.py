@@ -1,11 +1,13 @@
 from operator import itemgetter, attrgetter
 from itertools import combinations
 from views.tournament_view import TournamentView
+from views.player_view import PlayersView
 from views.tournament_form import TournamentForm
 from controllers.controller import Controller
 from controllers.player_controller import PlayerController
 from models.match import Match
 from models.round import Round
+from models.tournament import Tournament
 from utils.tournament_manager import tournament_manager as tournaments
 from utils.player_manager import player_manager as players
 
@@ -203,7 +205,7 @@ class TournamentController(Controller):
         tournaments.save_to_dbase()
         return tournament
 
-    def players_ranking(self, tournament):
+    def players_ranking(self, tournament: Tournament) -> list:
         list_players = []
         result = {}
         list_rounds = tournament.list_rounds
@@ -227,3 +229,9 @@ class TournamentController(Controller):
                     reverse=True
         )
         return sorted_ranking
+
+    def close_tournament(self, one_tournament: Tournament):
+        """ function that closes properly a tournamenet"""
+        TournamentView().show_tournament_done(one_tournament)
+        scored_ranking = self.players_ranking(one_tournament)
+        PlayersView().show_players_ranking(scored_ranking)
