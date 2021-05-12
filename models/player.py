@@ -130,7 +130,10 @@ class Player(Serializable):
             raise AttributeError(
                 "Error, the rank can't be negative"
             )
-        self.__rank = value
+        if isinstance(value, str):
+            self.__rank = int(value)
+        else:
+            self.__rank = value
 
     @property
     def identifier(self) -> str:
