@@ -19,6 +19,8 @@ class MainController:
         """ 1er function of the program """
         menu = Menu()
         one_input = menu.show_main_menu()
+        players.save_to_dbase()
+        tournaments.save_to_dbase()
         if one_input == '1':
             two_input, id_player = menu.show_players_menu()
             self.start_players_menu(two_input, id_player)
@@ -30,12 +32,12 @@ class MainController:
         else:
             print("Veuillez choisir une option valide du menu")
             self.start()
-        players.save_to_dbase()
-        tournaments.save_to_dbase()
 
     def start_players_menu(self, input, id_player):
         """ function that shows the players menu"""
         players_menu = PlayersView()
+        players.save_to_dbase()
+        tournaments.save_to_dbase()
         if input == "1":
             one_sort = players_menu.show_all_players()
             players_menu.show_sorted_players(
@@ -60,13 +62,13 @@ class MainController:
         else:
             print("Veuillez choisir une option valide du menu")
             self.start()
-        players.save_to_dbase()
-        tournaments.save_to_dbase()
 
     def start_tournaments_menu(self, input, id_tournament):
         """ function that stars the tournaments menu"""
         tournaments_menu = TournamentView()
         tournaments_controller = TournamentController()
+        players.save_to_dbase()
+        tournaments.save_to_dbase()
         if input == '1':
             tournaments_menu.show_all_tournaments()
             self.start()
@@ -103,8 +105,6 @@ class MainController:
         else:
             print("Veuillez choisir une option valide du menu")
             self.start()
-        players.save_to_dbase()
-        tournaments.save_to_dbase()
 
     def tournament_execution(self):
         """ function that executes the tournament"""
